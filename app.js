@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const routes = require('./routes/users');
+const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
 
@@ -21,6 +21,6 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/', routes);
+app.use(router);
 
 app.listen(PORT);
