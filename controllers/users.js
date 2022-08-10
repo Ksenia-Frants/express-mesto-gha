@@ -32,7 +32,15 @@ module.exports.getUser = (req, res) => {
       }
       return res.status(200).send(user);
     })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка.' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Переданы некорректные данные при обращении к пользователю.',
+        });
+      } else {
+        res.status(500).send({ message: `${err.name} ${err.message}` });
+      }
+    });
 };
 
 module.exports.updateUser = (req, res) => {
@@ -44,6 +52,7 @@ module.exports.updateUser = (req, res) => {
     },
     {
       new: true,
+      runValidators: true,
     },
   )
     .then((user) => {
