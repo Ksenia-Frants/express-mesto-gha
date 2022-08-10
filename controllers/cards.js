@@ -8,11 +8,12 @@ module.exports.createCard = (req, res) => {
     .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({
+        res.status(400).send({
           message: 'Переданы некорректные данные при создании карточки.',
         });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка.' });
       }
-      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
@@ -51,11 +52,12 @@ module.exports.likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(400).send({
+        res.status(400).send({
           message: 'Переданы некорректные данные для постановки лайка.',
         });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка.' });
       }
-      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
@@ -75,10 +77,11 @@ module.exports.dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(400).send({
+        res.status(400).send({
           message: ' Переданы некорректные данные для снятия лайка.',
         });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка' });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
