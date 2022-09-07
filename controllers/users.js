@@ -127,11 +127,15 @@ module.exports.updateAvatar = (req, res) => {
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
+  const { NODE_ENV, JWT_SECRET } = process.env;
 
   return User.findUserByCredentials(email, password)
 
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, "some-secret-key");
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+      );
       res.cookie("jwt", token, {
         maxAge: "3600000",
         httpOnly: true,

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const helmet = require("helmet");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -17,14 +18,6 @@ mongoose.connect("mongodb://localhost:27017/mestodb", {
 });
 
 app.use(helmet());
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: "62eff4b2a051020c723aaf72",
-  };
-
-  next();
-});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
