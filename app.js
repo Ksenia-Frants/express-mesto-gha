@@ -2,6 +2,7 @@ const helmet = require("helmet");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const router = require("./routes");
 
 const { createUser, login } = require("./controllers/users");
@@ -27,9 +28,10 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-app.post("/signin", login);
 app.post("/signup", createUser);
+app.post("/signin", login);
 
 app.use(auth);
 
