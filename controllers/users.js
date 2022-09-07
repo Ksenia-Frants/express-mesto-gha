@@ -8,10 +8,10 @@ const {
 } = require("../utils/errorCodes");
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar, email } = req.body;
+  const { name, about, avatar, email, password } = req.body;
 
   bcrypt
-    .hash(req.body.password, 10)
+    .hash(password, 10)
     .then((hash) =>
       User.create({
         name,
@@ -129,6 +129,7 @@ module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
+
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, "some-secret-key", {
         expiresIn: "7d",
