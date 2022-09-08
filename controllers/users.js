@@ -145,3 +145,23 @@ module.exports.login = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.getMyUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Пользователь по указанному _id не найден.");
+      }
+      return res.send(user);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        throw new BadRequestError(
+          "Переданы некорректные данные при обращении к пользователю."
+        );
+      } else {
+        next(err);
+      }
+    })
+    .catch(next);
+};
