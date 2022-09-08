@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = require("./routes");
+const errorHandler = require("./middlewares/error");
 
 const { createUser, login } = require("./controllers/users");
 const auth = require("./middlewares/auth");
@@ -29,5 +30,6 @@ app.post("/signin", login);
 app.use(auth);
 
 app.use(router);
+app.use(errorHandler);
 
 app.listen(PORT);
