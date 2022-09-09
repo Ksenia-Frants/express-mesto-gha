@@ -6,6 +6,12 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = require("./routes");
 const errorHandler = require("./middlewares/error");
+const {
+  validateCreateUser,
+  validateLogin,
+} = require("./middlewares/validation");
+
+const { errors } = require("celebrate");
 
 const { createUser, login } = require("./controllers/users");
 const auth = require("./middlewares/auth");
@@ -24,12 +30,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.post("/signup", createUser);
-app.post("/signin", login);
+app.post("/signup", validateCreateUser, createUser);
+app.post("/signin", validateLogin, login);
 
 app.use(auth);
 
 app.use(router);
+
+app.use(errors());
+
 app.use(errorHandler);
 
 app.listen(PORT);
