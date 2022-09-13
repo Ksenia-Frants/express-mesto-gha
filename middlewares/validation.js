@@ -1,10 +1,10 @@
-const { celebrate, Joi } = require("celebrate");
-const { linkRegExp } = require("../utils/linkRegExp");
+const { celebrate, Joi } = require('celebrate');
+const { linkRegExp } = require('../utils/linkRegExp');
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().pattern(linkRegExp),
@@ -13,7 +13,7 @@ const validateCreateUser = celebrate({
 
 const validateGetUser = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum().length(24),
+    userId: Joi.string().length(24).hex().required(),
   }),
 });
 
@@ -33,7 +33,7 @@ const validateUpdateAvatar = celebrate({
 const validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
   }),
 });
 
@@ -46,7 +46,7 @@ const validateCreateCard = celebrate({
 
 const validateWithCardId = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
+    cardId: Joi.string().length(24).hex().required(),
   }),
 });
 
